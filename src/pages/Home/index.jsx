@@ -9,6 +9,7 @@ import { api } from '../../services/api'
 import { CagetoryItem } from '../../components/CategoryItem'
 import { setFavorite, getFavorite } from '../../services/favoriete'
 import { FavoritePost } from '../../components/FavoritePost'
+import PostItem from '../../components/PostItem'
 
 
 export function Home() {
@@ -17,16 +18,26 @@ export function Home() {
 
     const [categories, setCategories] = useState([])
     const [favCategory, setFavCategory] = useState([])
+    const [posts, setPosts] = useState([])
 
     useEffect(() => {
 
         async function loadData() {
+
+            await getListposts()
 
             const result = await api.get('/categories?populate=icon')
             const { data } = result.data
             setCategories(data)
         }
         loadData()
+
+    }, [])
+
+    useEffect(() => {
+
+
+
 
     }, [])
 
@@ -40,6 +51,15 @@ export function Home() {
         myFavorite()
 
     }, [])
+
+    async function getListposts() {
+
+        const result = await api.get('/posts?populate=cover&doty=createdAt:desc')
+        const { data } = result.data
+
+        //console.log(data)
+        setPosts(data)
+    }
 
 
     async function handleFavorite(id) {
@@ -91,6 +111,14 @@ export function Home() {
 
                 <Text style={[styles.title,
                 { marginTop: favCategory.length > 0 ? 14 : 46 }]}>Conteúdos em alta</Text>
+
+                <FlatList
+                    style={{ flex: 1, paddingHorizontal: 18, }}
+                    showsVerticalScrollIndicator={false}
+                    data={posts}
+                    keyExtractor={(item) => String(item.id)}
+                    renderItem={({ item }) => <PostItem data={item} />}
+                />
             </View>
 
 

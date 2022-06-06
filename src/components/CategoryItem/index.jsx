@@ -23,7 +23,7 @@ export function CagetoryItem({ data, favorite }) {
 
             <Image
                 style={styles.icon}
-                source={{ uri: `http://192.168.0.14:1337${data?.icon?.data?.attributes?.url}` }} />
+                source={{ uri: `http://192.168.0.15:1337${data?.icon?.data?.attributes?.url}` }} />
             <Text style={styles.name}>{data.name}</Text>
         </TouchableOpacity>
     )
